@@ -11,7 +11,7 @@ services:
       - ./config:/config
       - ./logs:/tmp/logs
     environment:
-      - DUCKDB_DB=/data/mydatabase.db
+      - DUCKDB_DB=/data/ora_db.db
     networks:
       - migration-net
 
