@@ -1,0 +1,33 @@
+{
+    "migration_schema": "full",
+    "tables": 
+    [
+        {
+            "name": "account",
+            "insert_batchsize":50000
+        }
+    ]
+}
+
+{
+    "migration_schema": "push",
+    "csv_files":
+    [
+        {
+            "csv":"account.csv",
+            "table":"account",
+            "insert_batchsize":50000
+        }
+    ]
+}
+
+{
+    "migration_schema": "pull",
+    "tables": 
+    [
+        {
+            "name": "account",
+            "insert_batchsize":50000
+        }
+    ]
+}

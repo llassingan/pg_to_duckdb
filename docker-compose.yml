@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  data-migrator:
+    build: .
+    env_file:
+      - .env
+    volumes:
+      - ./data/dumps:/tmp/dumps
+      - ./data/db:/data
+      - ./config:/config
+      - ./logs:/tmp/logs
+    environment:
+      - DUCKDB_DB=/data/mydatabase.db
+    networks:
+      - migration-net
+
+volumes:
+  data-volume:
+  db-volume:
+
+networks:
+  migration-net:

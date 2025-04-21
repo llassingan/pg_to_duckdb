@@ -1,0 +1,10 @@
+{
+    "migration_schema": "full",
+    "tables": 
+    [
+        {
+            "name": "journal",
+            "insert_batchsize":50000
+        }
+    ]
+}
