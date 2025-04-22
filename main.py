@@ -75,7 +75,7 @@ class OracleToDuckDBMigration:
                 logger.warning(f"Waiting for DuckDB... Error: {str(e)}")
                 time.sleep(2)
 
-    def oracle_to_csv_copy(self, output_file, batch_size, table):
+    def oracle_to_csv_copy(self, output_file, batch_size,schema, table):
         logger.info(f"Starting Oracle export to {output_file}")
         start_time = time.time()
         
@@ -89,10 +89,9 @@ class OracleToDuckDBMigration:
             password=self.oracle_params['password'],
             dsn=dsn
         )
-        
         try:
             cursor = conn.cursor()
-            cursor.execute(f"SELECT * FROM {table}")
+            cursor.execute(f"SELECT * FROM {schema}.{table}")
             
             # Get column names
             columns = [col[0] for col in cursor.description]
@@ -165,6 +164,7 @@ class OracleToDuckDBMigration:
         else:
             for table_config in self.config.get('tables', []):
                 table_name = table_config.get('name')
+                schema_name = table_config.get('schema')
                 batch_s = table_config.get('insert_batchsize')
                 try:
                     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -172,12 +172,12 @@ class OracleToDuckDBMigration:
 
                     if migration_schema == "pull":
                         self.hc_oracle()
-                        self.oracle_to_csv_copy(csv_file,batch_s, table_name)
+                        self.oracle_to_csv_copy(csv_file,batch_s,schema_name, table_name)
 
                     if migration_schema == "full":
                         self.hc_oracle()
                         self.hc_duckdb()
-                        self.oracle_to_csv_copy(csv_file,batch_s, table_name)
+                        self.oracle_to_csv_copy(csv_file,batch_s,schema_name, table_name)
                         self.csv_to_duckdb(csv_file, table_name)
                     
                     logger.info(f"Migration completed for {table_name}")

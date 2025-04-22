@@ -3,8 +3,9 @@
     "tables": 
     [
         {
+            "schema": "IBANKCORE",
             "name": "journal",
-            "insert_batchsize":50000
+            "insert_batchsize":20000
         }
     ]
 }
